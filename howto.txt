@@ -1,0 +1,6 @@
+
+Replique o ataque na prática, capture os logs de sistema e tráfego de rede quando for apropriado e escreva um relatório técnico detalhando como você replicou cada passo do ataque, incluindo topologia de rede, as ferramentas e comandos utilizados, configurações de hosts, saídas e resultados.
+
+Dicas: use, quando/se necessário, docker ou virtualbox para montar a topologia, o pacote rsh-redone para replicar o cliente-servidor de remote shell, tcpdump ou wireshark para capturar tráfego de rede, scapy (ou a biblioteca socket.h, ou a ferramenta hping3) para criar pacotes e enviar pacotes de rede.
+
+

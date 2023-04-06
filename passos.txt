@@ -1,0 +1,4 @@
+descobrir mac de trusted_host
+dar deny em trusted_host
+spoofar proprio mac
+fazer rsh pra target

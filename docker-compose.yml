@@ -1,0 +1,22 @@
+services:
+  target:
+    build:
+      context: .
+      dockerfile: Dockerfile_Target
+    container_name: target
+    command: sleep infinity
+
+  trusted_host:
+    build:
+      context: .
+      dockerfile: Dockerfile_Target
+    container_name: trusted_host
+    command: sleep infinity
+
+  attacker:
+    build:
+      context: .
+      dockerfile: Dockerfile_Host
+    container_name: attacker
+    command: sleep infinity
+
