@@ -1,4 +1,5 @@
-descobrir mac de trusted_host
-dar deny em trusted_host
-spoofar proprio mac
-fazer rsh pra target
+trusted_host: se comunicar com target via rsh
+atacker: usar tcpdump pra monitorar o trafego entre target e trusted_host
+atacker: dar deny em trusted_host
+atacker: spoofar proprio mac
+atacker: fazer rsh pra target

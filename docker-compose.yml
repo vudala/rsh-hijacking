@@ -1,22 +1,31 @@
 services:
+  image_build:
+    container_name: image_build
+    image: rshcontainer:1
+    build: .
+
   target:
-    build:
-      context: .
-      dockerfile: Dockerfile_Target
+    image: rshcontainer:1
     container_name: target
     command: sleep infinity
+    depends_on:
+      - image_build
 
   trusted_host:
-    build:
-      context: .
-      dockerfile: Dockerfile_Target
+    image: rshcontainer:1
     container_name: trusted_host
     command: sleep infinity
+    depends_on:
+      - image_build
 
   attacker:
-    build:
-      context: .
-      dockerfile: Dockerfile_Host
+    image: rshcontainer:1
     container_name: attacker
     command: sleep infinity
+    depends_on:
+      - image_build
 
+
+networks:
+  default:
+    name: rede_virtual
