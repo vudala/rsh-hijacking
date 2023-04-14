@@ -1,3 +1,3 @@
 # remove todos os containers mortos
 
-sudo docker rm $(sudo docker ps -a -f "status=exited" --format {{.ID}})
+docker rm $(docker ps -a -f "status=exited" --format {{.ID}})

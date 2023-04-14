@@ -4,26 +4,33 @@ services:
     image: rshcontainer:1
     build: .
 
-  target:
+  server:
     image: rshcontainer:1
-    container_name: target
-    command: sleep infinity
+    container_name: server
     depends_on:
       - image_build
+    hostname: server
+    privileged: true
+    command: bash -c "/root/setup.sh && sleep infinity"
 
-  trusted_host:
+  trusted:
     image: rshcontainer:1
-    container_name: trusted_host
-    command: sleep infinity
+    container_name: trusted
     depends_on:
       - image_build
+    hostname: trusted
+    privileged: true
+    command: bash -c "/root/setup.sh && sleep infinity"
+
 
   attacker:
     image: rshcontainer:1
     container_name: attacker
-    command: sleep infinity
     depends_on:
       - image_build
+    hostname: attacker
+    privileged: true
+    command: bash -c "/root/setup.sh && sleep infinity"
 
 
 networks:
