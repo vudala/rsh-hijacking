@@ -27,9 +27,10 @@ com isso toda a comunicação que deveria ocorrer entre server e trusted passar�
 attacker: agora começamos a monitorar os pacotes que passam de um lado para o outro, dessa vez vamos analisar os pacotes como ascii para
 ver se alguma informação interessante trafega
 
-tcpdump -A -i eth0 host [ip de trusted]
+tcpdump -X -i eth0 host [ip de trusted]
 
 attacker: com isso notamos que há comunicação rsh ocorrendo entre as duas maquinas, logo é possível que haja uma relação de confiança entre as duas
+analisando os dados que passam, identificamos que root@server confia em trusted
 então iremos nos personificar como uma das máquinas confiáveis e invadir o sistema alheio!
 
 # dos em trusted???????????
