@@ -8,8 +8,6 @@ RUN apt install -y rsh-redone-client \
     tcpdump \
     htop \
     iputils-ping \
-    hping3 \
-    nmap \
     iproute2 \
     dsniff
 

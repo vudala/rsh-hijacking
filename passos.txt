@@ -12,6 +12,8 @@ server: pingar trusted para causar um arp request
 ping trusted
 
 
+da pra simular o cache expiry com arp -d [ip]
+
 attacker: agora que sabemos os macs e ips de quem está na nossa rede, vamos adicioná-los a nossa propria cache
 arp -s [ip de trusted] [mac de trusted]
 arp -s [ip de server] [mac de server]
