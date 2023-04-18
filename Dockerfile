@@ -9,7 +9,8 @@ RUN apt install -y rsh-redone-client \
     htop \
     iputils-ping \
     iproute2 \
-    dsniff
+    dsniff \
+    hping3
 
 USER root
 

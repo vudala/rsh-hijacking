@@ -4,21 +4,21 @@ services:
     image: rshcontainer:1
     build: .
 
+  xterm:
+    image: rshcontainer:1
+    container_name: xterm
+    depends_on:
+      - image_build
+    hostname: xterm
+    privileged: true
+    command: bash -c "/root/setup.sh && sleep infinity"
+
   server:
     image: rshcontainer:1
     container_name: server
     depends_on:
       - image_build
     hostname: server
-    privileged: true
-    command: bash -c "/root/setup.sh && sleep infinity"
-
-  trusted:
-    image: rshcontainer:1
-    container_name: trusted
-    depends_on:
-      - image_build
-    hostname: trusted
     privileged: true
     command: bash -c "/root/setup.sh && sleep infinity"
 
